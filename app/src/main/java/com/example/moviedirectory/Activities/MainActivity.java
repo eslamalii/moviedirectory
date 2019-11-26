@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.moviedirectory.Data.MovieRecyclerViewAdapter;
 import com.example.moviedirectory.Model.Movie;
 import com.example.moviedirectory.R;
 import com.example.moviedirectory.Util.Constants;
@@ -34,7 +35,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter<RecyclerView.ViewHolder> adapter;
+    private MovieRecyclerViewAdapter movieRecyclerViewAdapter;
     private List<Movie> movieList;
     private RequestQueue queue;
 
@@ -66,8 +67,13 @@ public class MainActivity extends AppCompatActivity {
 
         Prefs prefs = new Prefs(MainActivity.this);
         String search = prefs.getSearch();
-        getMovies(search);
+//        getMovies(search);
 
+        movieList = getMovies(search);
+
+        movieRecyclerViewAdapter = new MovieRecyclerViewAdapter(this, movieList);
+        recyclerView.setAdapter(movieRecyclerViewAdapter);
+        movieRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     public List<Movie> getMovies(String searchTerm) {
@@ -91,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
                         movie.setPoster(movieObj.getString("Poster"));
                         movie.setImdbId(movieObj.getString("imdbID"));
 
-                        Log.d("Movies", movie.getTitle());
+                        movieList.add(movie);
+//                        Log.d("Movies", movie.getTitle());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
