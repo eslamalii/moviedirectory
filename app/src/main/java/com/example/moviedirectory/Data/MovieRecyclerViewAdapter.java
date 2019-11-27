@@ -1,6 +1,7 @@
 package com.example.moviedirectory.Data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moviedirectory.Activities.MovieDetailActivity;
 import com.example.moviedirectory.Model.Movie;
 import com.example.moviedirectory.R;
 import com.squareup.picasso.Picasso;
@@ -66,7 +68,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         TextView year;
         TextView type;
 
-        public ViewHolder(@NonNull View view, Context ctx) {
+        public ViewHolder(@NonNull View view, final Context ctx) {
             super(view);
             context = ctx;
 
@@ -79,6 +81,10 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
                 @Override
                 public void onClick(View v) {
 
+                    Movie movie = movieList.get(getAdapterPosition());
+                    Intent intent = new Intent(context, MovieDetailActivity.class);
+                    intent.putExtra("movie", movie);
+                    ctx.startActivity(intent);
                 }
             });
         }
